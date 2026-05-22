@@ -29,7 +29,7 @@ jobs:
         docker tag innovatech_backend:latest ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
         docker push ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
 
-    - name: Desplegar Backend vía SSM con Compose
+    - name: Desplegar Backend vía SSM
       run: |
         aws ssm send-command \
           --instance-ids ${{ secrets.EC2_BACKEND_INSTANCE_ID }} \
@@ -37,9 +37,10 @@ jobs:
           --comment "Actualizar backend Innovatech" \
           --parameters '{"commands":[
             "set -e",
-            "aws ecr get-login-password --region '${{ secrets.AWS_REGION }}' | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}",
-            "cd /home/ubuntu",
-            "docker-compose pull backend",
-            "docker-compose up -d"
+            "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}",
+            "docker pull ${{ secrets.ECR_REPO_URL_BACKEND }}:latest",
+            "docker stop backend || true",
+            "docker rm backend || true",
+            "docker run -d --name backend -p 8080:8080 ${{ secrets.ECR_REPO_URL_BACKEND }}:latest"
           ]}' \
           --output text
