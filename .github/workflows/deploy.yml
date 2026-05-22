@@ -25,8 +25,8 @@ jobs:
 
     - name: Build imagen Backend y push a ECR
       run: |
-        docker build -t innovatech-backend .
-        docker tag innovatech-backend:latest ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
+        docker build -t innovatech_backend .
+        docker tag innovatech_backend:latest ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
         docker push ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
 
     - name: Desplegar Backend vía SSM con Compose
