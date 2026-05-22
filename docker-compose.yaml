@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  backend:
+    image: ${ECR_REPO_URL_BACKEND}:latest
+    container_name: innovatech-backend
+    restart: always
+    ports:
+      - "3001:3001"
