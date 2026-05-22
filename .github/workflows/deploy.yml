@@ -25,6 +25,9 @@ jobs:
 
     - name: Build imagen Backend y push a ECR
       run: |
+        # Verificamos que el repositorio exista, si no, lo crea (por seguridad)
+        aws ecr describe-repositories --repository-names innovatech_backend || aws ecr create-repository --repository-name innovatech_backend
+        
         docker build -t innovatech_backend .
         docker tag innovatech_backend:latest ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
         docker push ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
