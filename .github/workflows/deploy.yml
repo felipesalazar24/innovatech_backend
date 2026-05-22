@@ -43,6 +43,6 @@ jobs:
             "docker pull ${{ secrets.ECR_REPO_URL_BACKEND }}:latest",
             "docker stop backend || true",
             "docker rm backend || true",
-            "docker run -d --name backend -p 8080:3001 ${{ secrets.ECR_REPO_URL_BACKEND }}:latest"
+            "docker run -d --name backend -p 3001:3001 ${{ secrets.ECR_REPO_URL_BACKEND }}:latest"
           ]}' \
           --output text
